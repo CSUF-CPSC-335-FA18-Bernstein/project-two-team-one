@@ -15,6 +15,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -23,14 +24,73 @@ using namespace std;
 // Randomize the order of all items in the list
 //-----------------------------------------------------------------------------
 void randomize_list(string_vector & strings) {
-  // TODO: implement this function, then delete this comment
-  return;
+
+	int randomNumber;
+	string temp;	
+	srand(time(NULL));
+	for(int i = 0; i < strings.size() - 1; i++)
+	{
+		randomNumber = rand() % strings.size();
+		temp = strings[randomNumber];
+		strings[randomNumber] = strings[i];
+		strings[i] = temp;
+	}
+  	return;
 }
 
 //-----------------------------------------------------------------------------
 void merge(string_vector & strings, size_t start, size_t mid, size_t end) {
-  // TODO: implement this function, then delete this comment
-  return;
+ 
+	vector<string> left, right;
+ 
+   	for (int i = start; i <= mid; i++) 
+	{
+	      left.push_back(strings[i]);
+   	}
+
+	for (int i = mid + 1; i <= end; i++) 
+	{
+     		right.push_back(strings[i]);
+   	}
+
+	int s = start;
+	int finisher = 0;
+	while ((int)left.size() > 0 || (int)right.size() > 0) 
+	{
+      		if ((int)left.size() > 0 && (int)right.size() > 0)
+		 {
+         		if ((int)left.front().length() <= (int)right.front().length()) 
+			{
+		        	strings[s] = (string)left.front();
+            			left.erase(left.begin());
+         		} 
+   			else
+			{
+            			strings[s] = (string)right.front();
+            			right.erase(right.begin());
+         		}
+			s++;
+      		}  
+		else if ((int)left.size() > 0) 
+		{
+	        	for (int i = 0; i < (int)left.size(); i++)
+			{
+               			strings[s] = left[i];
+				s++;
+			}		
+            		break;
+      		}  
+		else if ((int)right.size() > 0) 
+		{
+			for (int i = 0; i < (int)right.size(); i++)
+			{
+               			strings[s] = right[i];
+				s++;
+			}
+            		break;
+      		}
+   	}
+	return;
 }
 
 //-----------------------------------------------------------------------------
@@ -40,8 +100,16 @@ void merge(string_vector & strings, size_t start, size_t mid, size_t end) {
 // the two parts together using the merge() method.
 //-----------------------------------------------------------------------------
 void mergesort(string_vector & strings, size_t start, size_t end) {
-  // TODO: implement this function, then delete this comment
-  return;
+
+	if (start < end) 
+    	{ 
+        	int middle = (start + end) / 2; 
+        	mergesort(strings, start, middle); 
+        	mergesort(strings, (middle + 1), end); 
+        	merge(strings, start, middle, end); 
+    	} 
+  	return;
+
 }
 
 //-----------------------------------------------------------------------------
@@ -51,8 +119,35 @@ void mergesort(string_vector & strings, size_t start, size_t end) {
 // It returns the index of the final position of the pivot value.
 //-----------------------------------------------------------------------------
 int hoare_partition(string_vector & strings, int start, int end) {
-  // TODO: implement this function, then delete this comment
-  return 0;
+
+	int pivot = strings[start].length();
+    	int i = start - 1;
+    	int j = end + 1;
+    	while(true)
+	{
+        	do
+		{
+            		j--;
+        	}
+		while(strings[j].length() > pivot);
+
+        	do
+		{
+            		i++;
+       		}
+		while(strings[i].length() < pivot);
+
+        	if(i < j)
+		{
+            		string temp = strings[i];
+            		strings[i] = strings[j];
+            		strings[j] = temp;
+        	}
+        	else
+		{
+			return j;
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -62,8 +157,15 @@ int hoare_partition(string_vector & strings, int start, int end) {
 // the two parts together using the merge() method.
 //-----------------------------------------------------------------------------
 void quicksort(string_vector & strings, int start, int end) {
-  // TODO: implement this function, then delete this comment
-  return;
+
+	if (strings[start].length() < strings[end].length())
+	{
+		int partition = hoare_partition(strings, start, end);
+		quicksort(strings, start, (partition - 1));
+		quicksort(strings, (partition + 1), end);
+		merge(strings, start, partition, end);
+	}
+  	return;
 }
 
 
