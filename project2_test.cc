@@ -43,7 +43,6 @@ int main() {
              string_vector orig8b = test8;
 			 sort(orig8b.begin(), orig8b.end());
 		     TEST_TRUE("true: 8 words", orig8a == orig8b);
-	cout << "test result: \n";
 
 			 string_vector n_words(words_txt.begin(), words_txt.begin() + 10000);
              string_vector origa = n_words;

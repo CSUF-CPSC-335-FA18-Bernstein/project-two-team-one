@@ -57,39 +57,39 @@ void merge(string_vector & strings, size_t start, size_t mid, size_t end) {
 	int finisher = 0;
 	while ((int)left.size() > 0 || (int)right.size() > 0) 
 	{
-      		if ((int)left.size() > 0 && (int)right.size() > 0)
-		 {
-         		if ((int)left.front().length() <= (int)right.front().length()) 
+		if ((int)left.size() > 0 && (int)right.size() > 0)
+		{
+			if ((int)left.front().length() <= (int)right.front().length()) 
 			{
-		        	strings[s] = (string)left.front();
-            			left.erase(left.begin());
-         		} 
-   			else
+				strings[s] = (string)left.front();
+				left.erase(left.begin());
+			} 
+			else
 			{
-            			strings[s] = (string)right.front();
-            			right.erase(right.begin());
-         		}
+				strings[s] = (string)right.front();
+				right.erase(right.begin());
+			}
 			s++;
-      		}  
+		}  
 		else if ((int)left.size() > 0) 
 		{
-	        	for (int i = 0; i < (int)left.size(); i++)
+			for (int i = 0; i < (int)left.size(); i++)
 			{
-               			strings[s] = left[i];
+				strings[s] = left[i];
 				s++;
 			}		
-            		break;
-      		}  
+			break;
+		}  
 		else if ((int)right.size() > 0) 
 		{
 			for (int i = 0; i < (int)right.size(); i++)
 			{
-               			strings[s] = right[i];
+				strings[s] = right[i];	
 				s++;
 			}
-            		break;
-      		}
-   	}
+			break;
+		}
+	}
 	return;
 }
 
