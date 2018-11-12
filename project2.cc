@@ -15,7 +15,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <iostream>
 
 using namespace std;
 
@@ -43,15 +42,15 @@ void merge(string_vector & strings, size_t start, size_t mid, size_t end) {
  
 	vector<string> left, right;
  
-   	for (int i = start; i <= mid; i++) 
+	for (int i = start; i <= mid; i++) 
 	{
-	      left.push_back(strings[i]);
-   	}
+		left.push_back(strings[i]);
+	}
 
 	for (int i = mid + 1; i <= end; i++) 
 	{
-     		right.push_back(strings[i]);
-   	}
+		right.push_back(strings[i]);
+	}
 
 	int s = start;
 	int finisher = 0;
@@ -59,7 +58,7 @@ void merge(string_vector & strings, size_t start, size_t mid, size_t end) {
 	{
 		if ((int)left.size() > 0 && (int)right.size() > 0)
 		{
-			if ((int)left.front().length() <= (int)right.front().length()) 
+			if (left.front().compare(right.front()) < 0) 
 			{
 				strings[s] = (string)left.front();
 				left.erase(left.begin());
@@ -120,7 +119,7 @@ void mergesort(string_vector & strings, size_t start, size_t end) {
 //-----------------------------------------------------------------------------
 int hoare_partition(string_vector & strings, int start, int end) {
 
-	int pivot = strings[start].length();
+	string pivot = strings[start];
     	int i = start - 1;
     	int j = end + 1;
     	while(true)
@@ -129,24 +128,34 @@ int hoare_partition(string_vector & strings, int start, int end) {
 		{
             		j--;
         	}
-		while(strings[j].length() > pivot);
+		while(strings[j].compare(pivot) > 0);
 
         	do
 		{
             		i++;
        		}
-		while(strings[i].length() < pivot);
+		while(strings[i].compare(pivot) < 0);
 
-        	if(i < j)
+            	string temp = strings[i];
+            	strings[i] = strings[j];
+            	strings[j] = temp;
+
+        	if(i >= j)
 		{
+			// undo last swap
             		string temp = strings[i];
             		strings[i] = strings[j];
             		strings[j] = temp;
-        	}
-        	else
-		{
+
+			// swap the pivot
+			temp = strings[start];
+			strings[start] = strings[j];
+			strings[j] = temp;			
+			
 			return j;
 		}
+
+
 	}
 }
 
@@ -158,12 +167,11 @@ int hoare_partition(string_vector & strings, int start, int end) {
 //-----------------------------------------------------------------------------
 void quicksort(string_vector & strings, int start, int end) {
 
-	if (strings[start].length() < strings[end].length())
+	if (start < end)
 	{
 		int partition = hoare_partition(strings, start, end);
-		quicksort(strings, start, (partition - 1));
+		quicksort(strings, start, partition);
 		quicksort(strings, (partition + 1), end);
-		merge(strings, start, partition, end);
 	}
   	return;
 }

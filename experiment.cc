@@ -22,13 +22,13 @@ int main() {
     return 1;
   }
 
-  int n = 1000;
+  int n = 120000;
   string_vector n_words(all_words.begin(), all_words.begin() + n);
 
   randomize_list(n_words);
 
   Timer timer;
-  mergesort(n_words);
+  quicksort(n_words);
   double elapsed = timer.elapsed();
   cout << "mergesort, "
        << "n=" << n << ", "
