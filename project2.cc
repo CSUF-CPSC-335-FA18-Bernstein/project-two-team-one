@@ -25,14 +25,11 @@ using namespace std;
 void randomize_list(string_vector & strings) {
 
 	int randomNumber;
-	string temp;	
 	srand(time(NULL));
 	for(int i = 0; i < strings.size() - 1; i++)
 	{
 		randomNumber = rand() % strings.size();
-		temp = strings[randomNumber];
-		strings[randomNumber] = strings[i];
-		strings[i] = temp;
+		swap(strings[randomNumber], strings[i]);
 	}
   	return;
 }
@@ -40,6 +37,7 @@ void randomize_list(string_vector & strings) {
 //-----------------------------------------------------------------------------
 void merge(string_vector & strings, size_t start, size_t mid, size_t end) {
  
+	// Create temporary vectors for both sides
 	vector<string> left, right;
  
 	for (int i = start; i <= mid; i++) 
@@ -53,10 +51,11 @@ void merge(string_vector & strings, size_t start, size_t mid, size_t end) {
 	}
 
 	int s = start;
-	int finisher = 0;
-	while ((int)left.size() > 0 || (int)right.size() > 0) 
+	// While there is still something in at least one vector
+	while (left.size() > 0 || right.size() > 0) 
 	{
-		if ((int)left.size() > 0 && (int)right.size() > 0)
+		// While both vectors still have something		
+		if (left.size() > 0 && right.size() > 0)
 		{
 			if (left.front().compare(right.front()) < 0) 
 			{
@@ -69,19 +68,20 @@ void merge(string_vector & strings, size_t start, size_t mid, size_t end) {
 				right.erase(right.begin());
 			}
 			s++;
-		}  
-		else if ((int)left.size() > 0) 
+		}
+		// if one vector is empty, finish the non-empty vector  
+		else if (left.size() > 0) 
 		{
-			for (int i = 0; i < (int)left.size(); i++)
+			for (int i = 0; i < left.size(); i++)
 			{
 				strings[s] = left[i];
 				s++;
 			}		
 			break;
 		}  
-		else if ((int)right.size() > 0) 
+		else if (right.size() > 0) 
 		{
-			for (int i = 0; i < (int)right.size(); i++)
+			for (int i = 0; i < right.size(); i++)
 			{
 				strings[s] = right[i];	
 				s++;
@@ -136,26 +136,18 @@ int hoare_partition(string_vector & strings, int start, int end) {
        		}
 		while(strings[i].compare(pivot) < 0);
 
-            	string temp = strings[i];
-            	strings[i] = strings[j];
-            	strings[j] = temp;
+            	swap(strings[j], strings[i]);
 
         	if(i >= j)
 		{
 			// undo last swap
-            		string temp = strings[i];
-            		strings[i] = strings[j];
-            		strings[j] = temp;
+            		swap(strings[j], strings[i]);
 
 			// swap the pivot
-			temp = strings[start];
-			strings[start] = strings[j];
-			strings[j] = temp;			
+			swap(strings[start], strings[j]);	
 			
 			return j;
 		}
-
-
 	}
 }
 
