@@ -122,33 +122,34 @@ int hoare_partition(string_vector & strings, int start, int end) {
 	string pivot = strings[start];
     	int i = start - 1;
     	int j = end + 1;
-    	while(true)
+    	do
 	{
-        	do
-		{
-            		j--;
-        	}
-		while(strings[j].compare(pivot) > 0);
-
+        	
         	do
 		{
             		i++;
        		}
 		while(strings[i].compare(pivot) < 0);
 
-            	swap(strings[j], strings[i]);
-
-        	if(i >= j)
+		do
 		{
-			// undo last swap
-            		swap(strings[j], strings[i]);
+            		j--;
+        	}
+		while(strings[j].compare(pivot) > 0);
+            	swap(strings[i], strings[j]);
 
-			// swap the pivot
-			swap(strings[start], strings[j]);	
-			
-			return j;
-		}
 	}
+	while(i < j);
+	
+	// undo last swap
+        swap(strings[j], strings[i]);
+
+	// swap the pivot
+	swap(strings[start], strings[j]);	
+			
+	return j;
+
+
 }
 
 //-----------------------------------------------------------------------------
